@@ -27,8 +27,8 @@ module Maze
 
     def initialize(pos, previous=nil)
       @cur_pos = pos
-      @pos_history = previous&.pos_history&.dup&.push(previous&.cur_pos) || []
-      @val_history = previous&.val_history&.dup&.push(previous&.cur_val) || []
+      @pos_history = previous ? previous.pos_history.dup.push(previous.cur_pos) : []
+      @val_history = previous ? previous.val_history.dup.push(previous.cur_val) : []
     end
 
     def to_goal
@@ -57,7 +57,7 @@ module Maze
     end
 
     def cur_val
-      @@maze.maze_map.dig(*self.cur_pos)
+      @@maze.maze_map[self.cur_pos[0]][self.cur_pos[1]]
     end
 
     def valid_pos?
@@ -85,7 +85,7 @@ end
 map_str = gets.gsub("\n", "")
 maze = Maze::Maze.new(map_str)
 result = Maze::Route.find_route(maze)
-puts(result.pos_history&.count || "-")
+puts( result ? result.pos_history.count : "-")
 
 # [
 #   "....../.s..../..2.../...1../....g."
